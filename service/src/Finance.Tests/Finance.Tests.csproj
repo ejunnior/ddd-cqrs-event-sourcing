@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+
+    <AssemblyName>Finance.Tests</AssemblyName>
+
+    <RootNamespace>Finance.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Fixtures\**" />
+    <Compile Remove="Treasury\**" />
+    <EmbeddedResource Remove="Fixtures\**" />
+    <EmbeddedResource Remove="Treasury\**" />
+    <None Remove="Fixtures\**" />
+    <None Remove="Treasury\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Infrastructure\PaymentUnitOfWorkTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Fixtures\AmountDto.cs" />
+    <Compile Include="Fixtures\AmountDtoFixture.cs" />
+    <Compile Include="Fixtures\BankAccountDtoFixture.cs" />
+    <Compile Include="Fixtures\BankAccountDto.cs" />
+    <Compile Include="Fixtures\CategoryDtoFixture.cs" />
+    <Compile Include="Fixtures\CategoryDto.cs" />
+    <Compile Include="Fixtures\CreditorDtoFixture.cs" />
+    <Compile Include="Fixtures\CreditorDto.cs" />
+    <Compile Include="Fixtures\BankPostingDto.cs" />
+    <Compile Include="Fixtures\RegisterBankPostingDtoFixture.cs" />
+    <Compile Include="Fixtures\RegisterBankPostingDto.cs" />
+    <Compile Include="Treasury\Aggregates\BankPostingAggregate\AmountTests.cs" />
+    <Compile Include="Treasury\Aggregates\BankPostingAggregate\BankPostingTests.cs" />
+    <Compile Include="Treasury\Api\ApiTestStartup.cs" />
+    <Compile Include="Treasury\Api\ControllerBaseTest.cs" />
+    <Compile Include="Treasury\Api\NameValueCollectionExtensions.cs" />
+    <Compile Include="Treasury\Services\RegisterBankPostingHandlerTests.cs" />
+    <Compile Include="Treasury\Services\ServiceBaseTest.cs" />
+    <Compile Include="Treasury\Services\ServiceCollectionExtensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoFixture" Version="4.14.0" />
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="Moq" Version="4.14.5" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="coverlet.collector" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Finance.Api\Finance.Api.csproj" />
+    <ProjectReference Include="..\Finance.Service\Finance.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\launchSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

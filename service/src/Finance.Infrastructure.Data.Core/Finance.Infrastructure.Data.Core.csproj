@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+    <AssemblyName>Finance.Infrastructure.Data.Core</AssemblyName>
+    <RootNamespace>Finance.Infrastructure.Data.Core</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RavenDB.Client" Version="5.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Finance.Domain.Core\Finance.Domain.Core.csproj" />
+  </ItemGroup>
+
+</Project>
