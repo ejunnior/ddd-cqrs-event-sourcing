@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Finance.Domain</AssemblyName>
+    <RootNamespace>Finance.Domain</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Treasury\Aggregates\BankPostingAggregate\BillStatus.cs" />
+    <Compile Remove="Treasury\Aggregates\BankPostingAggregate\Payable.cs" />
+    <Compile Remove="Treasury\Aggregates\BankPostingAggregate\Receivable.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Finance.Domain.Core\Finance.Domain.Core.csproj" />
+  </ItemGroup>
+</Project>

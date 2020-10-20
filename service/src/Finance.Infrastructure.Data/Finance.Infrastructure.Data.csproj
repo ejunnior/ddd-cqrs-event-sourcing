@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Finance.Infrastructure.Data</AssemblyName>
+    <RootNamespace>Finance.Infrastructure.Data</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Finance.Domain\Finance.Domain.csproj" />
+    <ProjectReference Include="..\Finance.Infrastructure.Data.Core\Finance.Infrastructure.Data.Core.csproj" />
+  </ItemGroup>
+</Project>

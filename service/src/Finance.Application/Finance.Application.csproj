@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Finance.Application</AssemblyName>
+    <RootNamespace>Finance.Application</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Bank\DomainEvents\**" />
+    <Compile Remove="Creditor\DomainEvents\**" />
+    <Compile Remove="Treasury\DomainEvents\**" />
+    <EmbeddedResource Remove="Bank\DomainEvents\**" />
+    <EmbeddedResource Remove="Creditor\DomainEvents\**" />
+    <EmbeddedResource Remove="Treasury\DomainEvents\**" />
+    <None Remove="Bank\DomainEvents\**" />
+    <None Remove="Creditor\DomainEvents\**" />
+    <None Remove="Treasury\DomainEvents\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Bank\Dto\RegisterBankAccountDto.cs" />
+    <Compile Remove="Bank\Dto\RegisterBankDto.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Finance.Domain.Core\Finance.Domain.Core.csproj" />
+    <ProjectReference Include="..\Finance.Domain\Finance.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

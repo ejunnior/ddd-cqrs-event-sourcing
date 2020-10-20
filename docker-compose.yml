@@ -1,0 +1,56 @@
+version: "3.1"
+services:
+    finance-backend-proxy:
+        container_name: finance-backend-proxy
+        depends_on:
+            - finance-api01
+        networks:
+            - finance-network
+    finance-api01:
+        container_name: finance-api01
+        networks:
+            - finance-network
+    finance-service:
+        container_name: finance-service
+        networks:
+            - finance-network
+        depends_on:
+            - finance-database
+    finance-database:
+        container_name: finance-database
+        volumes:
+            - finance-volume:/var/opt/mssql
+        networks:
+            - finance-network
+    finance-messaging:
+        container_name: messaging
+        networks:
+            - finance-network
+    finance-elasticsearch:
+        container_name: elasticsearch
+        networks: 
+            - finance-network                        
+    finance-kibana:
+        container_name: kibana
+        networks: 
+            - finance-network                        
+        depends_on:
+            - finance-elasticsearch
+    finance-prometheus:
+        container_name: prometheus
+        networks: 
+            - finance-network            
+    finance-grafana:
+        container_name: grafana
+        networks: 
+            - finance-network            
+        depends_on:
+            - finance-prometheus
+
+networks:
+    finance-network:
+        driver: bridge
+volumes:
+    finance-volume:
+    finance-elasticsearch-volume:        
+

@@ -1,0 +1,111 @@
+version: "3.1"
+services:
+    finance-backend-proxy:
+        image: ${DOCKER_REG}/finance:nginx
+        build:
+            context: .
+            dockerfile: .docker/nginx/nginx.${APP_ENV}.dockerfile
+        ports:
+            - "20000:80"
+    finance-api01:
+        image: ${DOCKER_REG}/finance:api
+        build:
+            context: .
+            dockerfile: .docker/api/api.${APP_ENV}.dockerfile
+        ports:
+            - "20001:80"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            - RabbitMQ__HostUri=rabbitmq://messaging/
+            - RabbitMQ__Username=guest
+            - RabbitMQ__Password=guest
+            - ConnectionStrings__FinanceConnectionString=Password=P@ssw0rd;Persist Security Info=True;User ID=sa;Initial Catalog=Db_Finance;Data Source=finance-database,1433
+            - Security__IdentityProvider=https://finance-dev.eu.auth0.com/
+            - Security__Audience=https://localhost:44346
+            - ElasticConfiguration__Uri=http://elasticsearch:9200
+    finance-service:
+        image: ${DOCKER_REG}/finance:service
+        build:
+            context: .
+            dockerfile: .docker/service/service.${APP_ENV}.dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - RabbitMQ__HostUri=rabbitmq://messaging/
+            - RabbitMQ__Username=guest
+            - RabbitMQ__Password=guest
+            - ConnectionStrings__FinanceConnectionString=Password=P@ssw0rd;Persist Security Info=True;User ID=sa;Initial Catalog=Db_Finance;Data Source=finance-database,1433
+            - ElasticConfiguration__Uri=http://elasticsearch:9200
+            - ConnectionStrings__RavenDbConnectionString=http://localhost:8080
+
+    finance-database:
+        image: ${DOCKER_REG}/finance:sql
+        build:
+            context: .
+            dockerfile: .docker/database/sql.${APP_ENV}.dockerfile
+        ports:
+            - "30000:1433"
+        volumes:
+            - finance-volume:/var/opt/mssql
+        environment:
+            - MSSQL_PID=Developer
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=P@ssw0rd
+            - MSSQL_DB=Db_Finance
+            - MSSQL_USER=finance
+            - MSSQL_PASSWORD=P@ssw0rd
+    finance-messaging:
+        image: ${DOCKER_REG}/finance:rabbitmq
+        build:
+            context: .
+            dockerfile: .docker/rabbitmq/rabbitmq.${APP_ENV}.dockerfile
+        ports:
+            - "15672:15672"
+            - "5672:5672"
+    finance-elasticsearch:
+        image: ${DOCKER_REG}/finance:elasticsearch
+        build:
+            context: .
+            dockerfile: .docker/elasticsearch/elasticsearch.${APP_ENV}.dockerfile
+        ports:
+            - "9200:9200"    
+            - "9300:9300"        
+        volumes:             
+            - finance-elasticsearch-volume:/usr/share/elasticsearch/data
+        environment: 
+            - xpack.monitoring.enabled=true
+            - xpack.watcher.enabled=false
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+            - discovery.type=single-node            
+    finance-kibana:
+        image: ${DOCKER_REG}/finance:kibana
+        build:
+            context: .
+            dockerfile: .docker/kibana/kibana.${APP_ENV}.dockerfile
+        ports: 
+            - "5601:5601"                    
+        environment:        
+            - ELASTICSEARCH_URL=http://localhost:9200
+    finance-prometheus:
+        image: ${DOCKER_REG}/finance:prometheus
+        build:
+            context: .
+            dockerfile: .docker/prometheus/prometheus.${APP_ENV}.dockerfile
+        ports:
+            - "9090:9090"
+    finance-grafana:
+        image: ${DOCKER_REG}/finance:grafana
+        build:
+            context: .
+            dockerfile: .docker/grafana/grafana.${APP_ENV}.dockerfile
+        ports:
+            - "3000:3000"
+        environment:
+            - GF_SECURITY_ADMIN_PASSWORD=P@ssw0rd            
+
+networks:
+    finance-network:
+        driver: bridge
+volumes:
+    finance-volume:
+    finance-elasticsearch-volume:        
